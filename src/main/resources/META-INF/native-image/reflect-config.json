@@ -1,0 +1,17 @@
+[
+  {
+    "name": "com.ibm.icu.text.BreakIteratorFactory",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "com.ibm.icu.impl.ICUBreakIteratorFactory",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "com.ibm.icu.text.RuleBasedBreakIterator",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true
+  }
+]

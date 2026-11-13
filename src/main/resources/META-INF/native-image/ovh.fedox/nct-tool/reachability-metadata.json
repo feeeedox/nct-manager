@@ -1,0 +1,10 @@
+{
+  "reflection": [
+    {
+      "type": "io.ktor.network.selector.InterestSuspensionsMap",
+      "allDeclaredFields": true,
+      "allDeclaredMethods": true,
+      "allDeclaredConstructors": true
+    }
+  ]
+}
