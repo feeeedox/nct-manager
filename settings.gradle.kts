@@ -6,4 +6,4 @@ pluginManagement {
 plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
 }
-rootProject.name = "nct-tool"
+rootProject.name = "nct-manager"
