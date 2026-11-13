@@ -1,6 +1,5 @@
 <h1 align="center">
-    <br>
-        NextCloud Talk Manager
+    NextCloud Talk Manager
     <br>
     <img src="bar.png" alt="bar" width="600px"/>
     <br>
