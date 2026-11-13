@@ -17,7 +17,6 @@ val SELECTED_ITEM_STYLE: Style = Style.newStyle().paddingLeft(2).foreground(Lipg
 val PAGINATION_STYLE: Style =
     Styles.defaultStyles().paginationStyle().paddingLeft(4)
 val HELP_STYLE: Style = Styles.defaultStyles().helpStyle().paddingLeft(4).paddingBottom(1)
-val QUIT_TEXT_STYLE: Style = Style.newStyle().margin(1, 0, 2, 4)
 
 class MainView : Model {
 
@@ -66,9 +65,6 @@ class MainView : Model {
         14
     )
 
-    var choice: String? = null
-    var quitting: Boolean = false
-
     override fun init(): Command? {
         val listInitCommand = list.init()
 
@@ -91,7 +87,6 @@ class MainView : Model {
 
         if (msg is KeyPressMessage) {
             if (msg.key().equals("q") || msg.key().equals("ctrl+c")) {
-                this.quitting = true
                 return UpdateResult.from(this, Command.quit())
             } else if (msg.key() == "enter") {
                 val item = list.selectedItem() as? Item
@@ -125,12 +120,6 @@ class MainView : Model {
     }
 
     override fun view(): String {
-        if (this.choice != null && this.choice!!.isNotEmpty()) {
-            return QUIT_TEXT_STYLE.render("${choice}? Sounds good to me.")
-        }
-        if (this.quitting) {
-            return QUIT_TEXT_STYLE.render("Okay, bye.")
-        }
         return "${CONTAINER_STYLE.render("\n${list.view()}")}"
     }
 

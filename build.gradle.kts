@@ -15,11 +15,10 @@ repositories {
 
 dependencies {
     implementation("com.williamcallahan:tui4j:0.3.3")
-    implementation("io.ktor:ktor-client-core:3.0.0")
-    implementation("io.ktor:ktor-client-cio:3.0.0")
-    implementation("io.ktor:ktor-client-content-negotiation:3.0.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.11.0")
+    implementation("org.json:json:20260814")
     implementation("org.slf4j:slf4j-simple:2.0.13")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:3.0.0")
+
 }
 
 tasks.test {
@@ -29,7 +28,17 @@ kotlin {
     jvmToolchain(25)
 }
 
-tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
+tasks.shadowJar {
+    archiveClassifier.set("")
+
+    minimize {
+        exclude(dependency("com.ibm.icu:icu4j:.*"))
+        exclude(dependency("com.williamcallahan:.*:.*"))
+        exclude(dependency("org.slf4j:.*:.*"))
+    }
+
+    mergeServiceFiles()
+
     manifest {
         attributes["Main-Class"] = "ovh.fedox.nct.NctToolKt"
     }

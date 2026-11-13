@@ -1,39 +1,40 @@
 package ovh.fedox.nct.http
 
-import io.ktor.client.*
-import io.ktor.client.call.*
-import io.ktor.client.engine.cio.*
-import io.ktor.client.plugins.*
-import io.ktor.client.plugins.contentnegotiation.*
-import io.ktor.client.request.*
-import io.ktor.serialization.kotlinx.json.*
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonArray
-import kotlinx.serialization.json.jsonObject
-import kotlinx.serialization.json.jsonPrimitive
+import org.json.JSONObject
+import java.net.URI
+import java.net.http.HttpClient
+import java.net.http.HttpRequest
+import java.net.http.HttpResponse
+import java.time.Duration
 
 object HttpClient {
 
-    val client = HttpClient(CIO) {
-        install(ContentNegotiation) {
-            json(Json { ignoreUnknownKeys = true })
-        }
-        install(HttpTimeout) {
-            requestTimeoutMillis = 600_000
-            connectTimeoutMillis = 30_000
-            socketTimeoutMillis = 600_000
-        }
-    }
+    val client: HttpClient = HttpClient.newBuilder()
+        .connectTimeout(Duration.ofSeconds(30))
+        .followRedirects(HttpClient.Redirect.NORMAL)
+        .build()
 
     suspend fun fetchLatestVersion(): String? {
-        val url = "https://api.github.com/repos/nextcloud-releases/talk-desktop/releases"
+        val request = HttpRequest.newBuilder()
+            .uri(URI.create("https://api.github.com/repos/nextcloud-releases/talk-desktop/releases/latest"))
+            .timeout(Duration.ofSeconds(60))
+            .header("Accept", "application/vnd.github+json")
+            .header("User-Agent", "nct-cli")
+            .GET()
+            .build()
 
-        val jsonArray: JsonArray = client.get(url).body()
+        val response = client.send(
+            request,
+            HttpResponse.BodyHandlers.ofString()
+        )
 
-        val firstRelease = jsonArray[0].jsonObject
-
-        val tagName = firstRelease["tag_name"]?.jsonPrimitive?.content
-        return tagName
+        check(response.statusCode() in 200..299) {
+            "GitHub API failed: ${response.statusCode()} ${response.body()}"
+        }
+        
+        return JSONObject(response.body())
+            .optString("tag_name")
+            .takeIf { it.isNotBlank() }
     }
 
 }
