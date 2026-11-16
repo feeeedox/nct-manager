@@ -35,6 +35,22 @@ The tool will fetch the latest release-tag from the GitHub pages, and downloads 
 2. Execute the file with a double-click or `java -jar file-name.jar`
 3. Proceed with your own steps.
 
+### Or, execute this command:
+
+```shell
+mkdir -p ~/.local/share/nct-manager ~/.local/share/applications && wget -O ~/.local/share/nct-manager/nct-manager.jar https://github.com/feeeedox/nct-manager/releases/latest/download/nct-manager-1.0-SNAPSHOT.jar && cat << EOF > ~/.local/share/applications/nct-manager.desktop
+[Desktop Entry]
+Name=NextCloud Talk Manager
+Comment=Installing/updating NCT with this simple tool.
+Exec=java -jar $HOME/.local/share/nct-manager/nct-manager.jar
+Icon=utilities-terminal
+Terminal=true
+Type=Application
+Categories=Utility;
+EOF
+```
+This will script gives you a .desktop file, and also saves the nct manager in a save location.
+
 ## License
  
 [MIT](../LICENSE)
